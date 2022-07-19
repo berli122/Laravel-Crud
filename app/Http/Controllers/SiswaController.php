@@ -26,6 +26,7 @@ class SiswaController extends Controller
     public function create()
     {
         //
+        return view('siswa.create');
     }
 
     /**
@@ -37,6 +38,14 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate([
+            'nama' => 'required',
+            'nis' => 'required|unique:siswa|max:255',
+            'jenis_klamin' => 'required',
+            'agama' => 'required',
+            'tgl_lahir' => 'required',
+            'alamat' => 'required',
+        ]);
     }
 
     /**
@@ -82,5 +91,9 @@ class SiswaController extends Controller
     public function destroy($id)
     {
         //
+        $siswa = Siswa::findOrFail($id);
+        $siswa = delete();
+        return redirect()->route('siswa.index')
+        ->with('succes', 'Data Berhasil dihapus');
     }
 }
